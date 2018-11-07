@@ -200,15 +200,10 @@
     <select id="selectLogin" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
-        from mmall_user
-        where username = #{username}
-        and password = #{password}
+        from mmall_user where username = #{username} and password = #{password}
     </select>
     <select id="selectQuestionByUsername" resultType="string" parameterType="string">
-        select
-        question
-        from mmall_user
-        where username = #{username}
+        select question from mmall_user where username = #{username}
     </select>
     <select id="checkAnswer" resultType="int" parameterType="map">
         select count(1) from mmall_user where username = #{username} and answer = #{answer}
@@ -218,4 +213,10 @@
         set password = #{newPassword}, update_time=now()
         where username = #{username}
     </update>
+    <select id="checkUseridPassword" resultType="int" parameterType="map">
+      select count(1) from mmall_user where id = #{userId} and password = #{oldPassword}
+    </select>
+    <select id="checkIdEmail" resultType="int" parameterType="map">
+      select count(1) from mmall_user where id = #{userId} and email = #{email}
+    </select>
 </mapper>

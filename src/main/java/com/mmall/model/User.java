@@ -361,4 +361,16 @@ public class User {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+    public void setUpdateField(User user){
+        //id, username obtained from session loginUser
+        this.id = user.getId();
+        this.username = user.getUsername();
+
+        //Other info obtained from user type-in
+        this.email = user.getEmail();
+        this.phone = user.getPhone();
+        this.question = user.getQuestion();
+        this.answer = user.getAnswer();
+    }
 }

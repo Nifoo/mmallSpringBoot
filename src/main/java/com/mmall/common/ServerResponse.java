@@ -37,11 +37,15 @@ public class ServerResponse<T> implements Serializable {
         return new ServerResponse<>(ResponseCode.SUCCESS.getCode(), msg, data);
     }
 
-    public static ServerResponse<String> succWithMsg(String msg){
+    public static<T> ServerResponse<T> succWithMsg(String msg){
         return new ServerResponse<>(ResponseCode.SUCCESS.getCode(), msg, null);
     }
 
-    public static ServerResponse<String> failWithMsg(String msg){
+    public static<T> ServerResponse<T> failWithMsg(String msg){
         return new ServerResponse<>(ResponseCode.ERROR.getCode(), msg, null);
+    }
+
+    public static<T> ServerResponse<T> failWithCodeMsg(int code, String msg){
+        return new ServerResponse<>(code, msg, null);
     }
 }

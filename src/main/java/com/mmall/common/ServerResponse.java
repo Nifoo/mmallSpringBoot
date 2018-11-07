@@ -1,5 +1,6 @@
 package com.mmall.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
@@ -27,7 +28,20 @@ public class ServerResponse<T> implements Serializable {
         return data;
     }
 
+    @JsonIgnore
     public boolean isSucc(){
         return this.status == ResponseCode.SUCCESS.getCode();
+    }
+
+    public static<T> ServerResponse<T> succWithMsgData(String msg, T data){
+        return new ServerResponse<>(ResponseCode.SUCCESS.getCode(), msg, data);
+    }
+
+    public static ServerResponse<String> succWithMsg(String msg){
+        return new ServerResponse<>(ResponseCode.SUCCESS.getCode(), msg, null);
+    }
+
+    public static ServerResponse<String> failWithMsg(String msg){
+        return new ServerResponse<>(ResponseCode.ERROR.getCode(), msg, null);
     }
 }

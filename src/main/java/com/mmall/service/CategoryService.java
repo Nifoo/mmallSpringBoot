@@ -52,8 +52,7 @@ public class CategoryService implements ICategoryService {
         List<Category> categoryList = categoryMapper.findSonCategory(categoryId);
         if (CollectionUtils.isEmpty(categoryList)) {
             logger.info("son categories under id = " + categoryId + " not found!");
-        } else{
-            return ServerResponse.succWithMsgData("findSonCategory succeed!", categoryList);
         }
+        return ServerResponse.succWithMsgData("findSonCategory succeed!", categoryList);
     }
 }

@@ -34,7 +34,7 @@ public class UserController {
     @ResponseBody
     public ServerResponse<String> logout(HttpSession session) {
         session.removeAttribute(Cnst.CURRENT_USER);
-        return ServerResponse.succWithMsg("logout success");
+        return ServerResponse.succWithMsg("logout succeed");
     }
 
     //verified
@@ -87,7 +87,7 @@ public class UserController {
         else {
             User loginUserFull = userService.getUserInfo(loginUser).getData();
             loginUserFull.setPassword("");
-            return ServerResponse.succWithMsgData("getUserInfo success", loginUserFull);
+            return ServerResponse.succWithMsgData("getUserInfo succeed", loginUserFull);
         }
     }
 
@@ -103,9 +103,9 @@ public class UserController {
             user.setUsername(loginUser.getUsername());
             ServerResponse<User> response = userService.updateUserInfo(user);
             if (response.isSucc()) {
-                //Update userInfo success, update session
+                //Update userInfo succeed, update session
                 session.setAttribute(Cnst.CURRENT_USER, response.getData());
-                return ServerResponse.succWithMsg("updateUserInfo success");
+                return ServerResponse.succWithMsg("updateUserInfo succeed");
             } else {
                 return ServerResponse.failWithMsg("updateUserInfo failed");
             }

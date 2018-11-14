@@ -26,7 +26,7 @@ public class UserServiceImpl implements IUserService {
         User user = userMapper.selectLogin(username, MD5Util.getMD5(password));
         if (user == null) return new ServerResponse<>(ResponseCode.ERROR.getCode(), "wrong password", null);
         user.setPassword("");
-        return new ServerResponse<>(ResponseCode.SUCCESS.getCode(), "login success", user);
+        return new ServerResponse<>(ResponseCode.SUCCESS.getCode(), "login succeed", user);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class UserServiceImpl implements IUserService {
         //MD5 encryption
         user.setPassword(MD5Util.getMD5(user.getPassword()));
         if (userMapper.insertSelective(user) <= 0) return ServerResponse.failWithMsg("register failed!");
-        else return ServerResponse.succWithMsg("register success!");
+        else return ServerResponse.succWithMsg("register succeed!");
     }
 
     @Override
@@ -53,7 +53,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public ServerResponse<String> checkAnswer(String username, String answer) {
-        //If answer is rong
+        //If answer is wrong
         if (userMapper.checkAnswer(username, answer) <= 0) return ServerResponse.failWithMsg("wrong answer");
         //If correct, Generate token and put into local cache
         String forgetToken = UUID.randomUUID().toString();
@@ -68,7 +68,7 @@ public class UserServiceImpl implements IUserService {
         if (tokenCached == null || !tokenCached.equals(token)) return ServerResponse.failWithMsg("wrong token!");
         //Token checked
         if (userMapper.updatePasswordByUsername(username, MD5Util.getMD5(newPassword)) > 0)
-            return ServerResponse.succWithMsg("update password success");
+            return ServerResponse.succWithMsg("update password succeed");
         else return ServerResponse.failWithMsg("update password failed");
     }
 
@@ -78,7 +78,7 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.failWithMsg("userid and password not match!");
         user.setPassword(MD5Util.getMD5(newPassword));
         if (userMapper.updateByPrimaryKey(user) <= 0) return ServerResponse.failWithMsg("reset password failed!");
-        else return ServerResponse.succWithMsg("reset password success!");
+        else return ServerResponse.succWithMsg("reset password succeed!");
     }
 
     @Override
@@ -86,7 +86,7 @@ public class UserServiceImpl implements IUserService {
     public ServerResponse<User> getUserInfo(User user) {
         User userInDB = userMapper.selectByPrimaryKey(user.getId());
         if (userInDB == null) return ServerResponse.failWithMsg("user not found in DB!");
-        else return ServerResponse.succWithMsgData("getUserInfo success", userInDB);
+        else return ServerResponse.succWithMsgData("getUserInfo succeed", userInDB);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class UserServiceImpl implements IUserService {
         User updateUser = new User();
         updateUser.setUpdateField(user);
         if (userMapper.updateByPrimaryKeySelective(updateUser) > 0)
-            return ServerResponse.succWithMsgData("update userInfo success!", updateUser);
+            return ServerResponse.succWithMsgData("update userInfo succeed!", updateUser);
         else return ServerResponse.failWithMsg("update userInfo failed!");
     }
 }

@@ -22,6 +22,7 @@ public class CategoryManageController {
     @Autowired
     private ICategoryService categoryService;
 
+    //Verified
     @RequestMapping("/add_category.do")
     @ResponseBody
     public ServerResponse addCategory(HttpSession session, String categoryName,
@@ -38,6 +39,7 @@ public class CategoryManageController {
         return categoryService.addCategory(categoryName, parentId);
     }
 
+    //Verified
     @RequestMapping("/update_category.do")
     @ResponseBody
     public ServerResponse updateCategoryById(HttpSession session, Category category) {
@@ -53,10 +55,12 @@ public class CategoryManageController {
         return categoryService.updateCategory(category);
     }
 
+    //Verified
     //find all the son-nodes of given parentId (default 0)
     @RequestMapping("/find_son_category.do")
     @ResponseBody
-    public ServerResponse<List<Category>> findSonCategory(HttpSession session, int categoryId){
+    public ServerResponse<List<Category>> findSonCategory(HttpSession session,
+            @RequestParam(value = "categoryId", defaultValue = "0") int categoryId) {
         User user = (User) session.getAttribute(Cnst.CURRENT_USER);
         if (user == null) {
             return ServerResponse
@@ -67,5 +71,23 @@ public class CategoryManageController {
             return ServerResponse.failWithMsg("only admin can update category!");
         }
         return categoryService.findSonCategory(categoryId);
+    }
+
+    //Verified
+    //find all the child-nodes Id (recursive) of given parentId (default 0) and itself
+    @RequestMapping("/find_child_category.do")
+    @ResponseBody
+    public ServerResponse<List<Integer>> findChildCategory(HttpSession session,
+            @RequestParam(value = "categoryId", defaultValue = "0") int categoryId) {
+        User user = (User) session.getAttribute(Cnst.CURRENT_USER);
+        if (user == null) {
+            return ServerResponse
+                    .failWithCodeMsg(ResponseCode.NEED_LOGIN.getCode(),
+                            "need login to update category!");
+        }
+        if (user.getRole() != Role.ROLE_ADMIN) {
+            return ServerResponse.failWithMsg("only admin can update category!");
+        }
+        return categoryService.findChildCategory(categoryId);
     }
 }

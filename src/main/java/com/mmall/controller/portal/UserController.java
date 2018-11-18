@@ -91,6 +91,7 @@ public class UserController {
         }
     }
 
+    //Verified
     @RequestMapping(value = "update_userinfo.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> updateUserInfo(HttpSession session, User user) {

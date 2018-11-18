@@ -1,6 +1,7 @@
 package com.mmall.service;
 
 import com.mmall.common.Cnst;
+import com.mmall.common.Cnst.Role;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.common.TokenCache;
@@ -100,5 +101,11 @@ public class UserServiceImpl implements IUserService {
         if (userMapper.updateByPrimaryKeySelective(updateUser) > 0)
             return ServerResponse.succWithMsgData("update userInfo succeed!", updateUser);
         else return ServerResponse.failWithMsg("update userInfo failed!");
+    }
+
+    @Override
+    public ServerResponse checkAdminRole(User user){
+         if (user.getRole()==Role.ROLE_ADMIN) return ServerResponse.succWithMsg("is admin");
+         else return ServerResponse.failWithMsg("not admin");
     }
 }

@@ -7,14 +7,20 @@ import com.mmall.common.ServerResponse;
 import com.mmall.model.Product;
 import com.mmall.model.User;
 import com.mmall.model.vo.ProductDetailVo;
+import com.mmall.service.IFileService;
 import com.mmall.service.IProductService;
 import com.mmall.service.IUserService;
+import java.util.HashMap;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/manage/product/")
@@ -24,6 +30,11 @@ public class ProductManageController {
     private IUserService userService;
     @Autowired
     private IProductService productService;
+    @Autowired
+    private IFileService fileService;
+
+    @Value("${ftp.server.http.prefix}")
+    private String ftpPrefix;
 
     //Verified
     //insert or update product in Product Table.
@@ -113,6 +124,33 @@ public class ProductManageController {
             return productService.searchProduct(productId, productName, pageNum, pageSize);
         } else {
             return ServerResponse.failWithMsg("Only admin can search the product!");
+        }
+    }
+
+    @RequestMapping("upload.do")
+    @ResponseBody
+    public ServerResponse upload(@RequestParam(name = "upload_file") MultipartFile multipartFile,
+            HttpServletRequest request,
+            HttpSession session) {
+        User user = (User) session.getAttribute(Cnst.CURRENT_USER);
+        if (user == null) {
+            return ServerResponse
+                    .failWithCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "Pleas login as admin!");
+        }
+        if (userService.checkAdminRole(user).isSucc()) {
+            String path = request.getSession().getServletContext().getRealPath("upload");
+            String targetFileName = fileService.upload(multipartFile, path);
+            if (targetFileName == null) {
+                return ServerResponse.failWithMsg("upload failed!");
+            } else {
+                String url = ftpPrefix + targetFileName;
+                Map<String, String> fileMap = new HashMap<>();
+                fileMap.put("uri", targetFileName);
+                fileMap.put("url", url);
+                return ServerResponse.succWithMsgData("upload succeed.", fileMap);
+            }
+        } else {
+            return ServerResponse.failWithMsg("Only admin can upload the product!");
         }
     }
 }

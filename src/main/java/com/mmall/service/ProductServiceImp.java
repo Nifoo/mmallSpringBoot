@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductService implements IProductService {
+public class ProductServiceImp implements IProductService {
 
     @Autowired
     private ProductMapper productMapper;

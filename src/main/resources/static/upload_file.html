@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <title>Upload File</title>
+</head>
+<body>
+  <form name="upload_file_form" action="/manage/product/upload.do" method="post" enctype="multipart/form-data">
+    <input type="file" name="upload_file">
+    <button class="btn btn-default">Submit!</button>
+  </form>
+</body>
+</html>

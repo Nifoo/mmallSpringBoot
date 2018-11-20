@@ -75,9 +75,9 @@ public class CategoryManageController {
 
     //Verified
     //find all the child-nodes Id (recursive) of given parentId (default 0) and itself
-    @RequestMapping("/find_child_category.do")
+    @RequestMapping("/find_child_and_itself_category.do")
     @ResponseBody
-    public ServerResponse<List<Integer>> findChildCategory(HttpSession session,
+    public ServerResponse<List<Integer>> findChildAndItselfCategory(HttpSession session,
             @RequestParam(value = "categoryId", defaultValue = "0") int categoryId) {
         User user = (User) session.getAttribute(Cnst.CURRENT_USER);
         if (user == null) {
@@ -88,6 +88,6 @@ public class CategoryManageController {
         if (user.getRole() != Role.ROLE_ADMIN) {
             return ServerResponse.failWithMsg("only admin can update category!");
         }
-        return categoryService.findChildCategory(categoryId);
+        return categoryService.findChildAndItselfCategory(categoryId);
     }
 }

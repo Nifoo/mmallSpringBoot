@@ -33,8 +33,8 @@ public class ProductManageController {
     @Autowired
     private IFileService fileService;
 
-    @Value("${ftp.server.http.prefix}")
-    private String ftpPrefix;
+    @Value("${nginx.server.img.prefix}")
+    private String nginxImgPrefix;
 
     //Verified
     //insert or update product in Product Table.
@@ -143,7 +143,7 @@ public class ProductManageController {
             if (targetFileName == null) {
                 return ServerResponse.failWithMsg("upload failed!");
             } else {
-                String url = ftpPrefix + targetFileName;
+                String url = nginxImgPrefix + targetFileName;
                 Map<String, String> fileMap = new HashMap<>();
                 fileMap.put("uri", targetFileName);
                 fileMap.put("url", url);

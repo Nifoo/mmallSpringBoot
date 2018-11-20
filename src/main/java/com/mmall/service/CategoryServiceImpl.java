@@ -62,7 +62,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
     //find all the child-nodes Id (recursive) of given parentId (default 0) and itself
     @Override
-    public ServerResponse<List<Integer>> findChildCategory(int categoryId){
+    public ServerResponse<List<Integer>> findChildAndItselfCategory(int categoryId){
         HashSet<Integer> categoryIdHashSet = new HashSet<>();
         Deque<Integer> categoryIdDeque = new ArrayDeque<>();
         categoryIdDeque.add(categoryId);

@@ -12,6 +12,6 @@ public interface ICategoryService {
 
     ServerResponse<List<Category>> findSonCategory(int categoryId);
 
-    ServerResponse<List<Integer>> findChildCategory(int categoryId);
+    ServerResponse<List<Integer>> findChildAndItselfCategory(int categoryId);
 
 }

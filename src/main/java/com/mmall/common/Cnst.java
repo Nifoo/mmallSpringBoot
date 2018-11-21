@@ -32,4 +32,14 @@ public class Cnst {
     public interface ProductListOrderBy{
         Set<String> ProductOrder = Sets.newHashSet("price_desc","price_asc");
     }
+
+    public interface Cart{
+        int CHECKED = 1;
+        int UNCHECKED = 2;
+    }
+
+    public static int changeCheckState(int curState){
+        if(curState==Cart.CHECKED) return Cart.UNCHECKED;
+        else return Cart.CHECKED;
+    }
 }

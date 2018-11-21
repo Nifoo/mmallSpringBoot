@@ -156,4 +156,21 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByUserIdProductId" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List" />
+    from mmall_cart
+    where user_id = #{userId} and product_id = #{productId}
+  </select>
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="int">
+    select
+    <include refid="Base_Column_List" />
+    from mmall_cart
+    where user_id = #{userId}
+  </select>
+  <update id="updateAllCheckByUserId" parameterType="map">
+    update mmall_cart
+    set checked = #{checkState}
+    where id = #{userId}
+  </update>
 </mapper>

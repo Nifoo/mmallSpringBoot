@@ -240,10 +240,12 @@
     <include refid="Base_Column_List"></include>
     from mmall_product
     where status = 1
-    and name like #{keyword}
-    <if test = "categoryIdList != null">
+    <if test = "keyword != null">
+      and name like #{keyword}
+    </if>
+    <if test = "categoryid_list != null">
       and category_id in
-      <foreach item="item" index="index" open="(" separator="," close=")" collection="categoryIdList">
+      <foreach item="item" index="index" open="(" separator="," close=")" collection="categoryid_list">
         #{item}
       </foreach>
     </if>

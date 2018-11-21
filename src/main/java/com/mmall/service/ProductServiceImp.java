@@ -188,7 +188,7 @@ public class ProductServiceImp implements IProductService {
     @Override
     public ServerResponse<PageInfo> searchProductUser(String keyword, Integer categoryId,
             int pageNum, int pageSize, String orderBy) {
-        PageHelper.startPage(pageNum, pageSize);
+
         if (StringUtils.isNullOrEmpty(keyword) && categoryId == null) {
             return ServerResponse.succWithMsg("keyword and categoryId are empty!");
         }
@@ -203,20 +203,27 @@ public class ProductServiceImp implements IProductService {
             categoryIdList = categoryService.findChildAndItselfCategory(categoryId).getData();
         }
 
+        PageHelper.startPage(pageNum, pageSize);
+
         //Sort with orderBy
-        if (StringUtils.isNullOrEmpty(orderBy)) {
-            if (Cnst.ProductListOrderBy.PRICE_ASC_DESC.contains(orderBy)) {
-                String[] orderByArray = orderBy.split("_");
+        String[] orderByArray = new String[2];
+        if (!StringUtils.isNullOrEmpty(orderBy)) {
+            if (Cnst.ProductListOrderBy.ProductOrder.contains(orderBy)) {
+                orderByArray = orderBy.split("_");
                 PageHelper.orderBy(orderByArray[0] + " " + orderByArray[1]);
             }
         }
 
         //Search in MySQL DB
         List<Product> products = productMapper
-                .selectByNameAndCategoryIds(StringUtils.isNullOrEmpty(keyword) ? null : "%" + keyword + "%",
+                .selectByNameAndCategoryIds(StringUtils.isNullOrEmpty(keyword) ? null : "%"
+                                + keyword + "%",
                         categoryIdList.size() == 0 ? null : categoryIdList);
 
         PageInfo pageOfProducts = new PageInfo(products);
+//        if (Cnst.ProductListOrderBy.ProductOrder.contains(orderBy)) {
+//            pageOfProducts.setOrderBy(orderByArray[0] + " " + orderByArray[1]);
+//        }
 
         //Convert to vo
         List<ProductDetailVo> productDetailVos = new ArrayList<>();

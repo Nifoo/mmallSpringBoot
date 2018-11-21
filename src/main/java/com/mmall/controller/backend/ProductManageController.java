@@ -109,6 +109,8 @@ public class ProductManageController {
         }
     }
 
+    //Verified
+    //search product by id or name (fully matching).
     @RequestMapping("search.do")
     @ResponseBody
     public ServerResponse<PageInfo> searchProduct(HttpSession session, Integer productId,
@@ -127,6 +129,8 @@ public class ProductManageController {
         }
     }
 
+    //Verified
+    //Upload image to FTP server, returns a map containing HTTP entrance (url, would routed by Nginx to image file on server).
     @RequestMapping("upload.do")
     @ResponseBody
     public ServerResponse upload(@RequestParam(name = "upload_file") MultipartFile multipartFile,

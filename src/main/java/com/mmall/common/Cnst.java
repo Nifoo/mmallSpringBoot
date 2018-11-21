@@ -30,6 +30,6 @@ public class Cnst {
     }
 
     public interface ProductListOrderBy{
-        Set<String> PRICE_ASC_DESC = Sets.newHashSet("price_desc","price_asc");
+        Set<String> ProductOrder = Sets.newHashSet("price_desc","price_asc");
     }
 }

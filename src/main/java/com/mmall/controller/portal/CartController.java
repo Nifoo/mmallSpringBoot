@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -62,7 +63,8 @@ public class CartController {
 
     @RequestMapping("change_check_state.do")
     @ResponseBody
-    public ServerResponse<CartVo> changeCheckState(HttpSession session, List<Integer> productIds) {
+    public ServerResponse<CartVo> changeCheckState(HttpSession session,
+            @RequestParam(value = "productId[]") List<Integer> productIds) {
         User loginUser = (User) session.getAttribute(Cnst.CURRENT_USER);
         if (loginUser == null) {
             return ServerResponse
@@ -81,6 +83,19 @@ public class CartController {
                     .failWithCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "user not login!");
         } else {
             return cartService.setAllCheckState(loginUser.getId(), Cnst.Cart.CHECKED);
+        }
+    }
+
+    @RequestMapping("/")
+    @ResponseBody
+    public ServerResponse<CartVo> getCartVo(HttpSession session) {
+        User loginUser = (User) session.getAttribute(Cnst.CURRENT_USER);
+        if (loginUser == null) {
+            return ServerResponse
+                    .failWithCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "user not login!");
+        } else {
+            return ServerResponse.succWithMsgData("show cart succeess.",
+                    cartService.getCartVo(loginUser.getId()));
         }
     }
 }

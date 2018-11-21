@@ -12,7 +12,7 @@ public interface ICartService {
 
     ServerResponse<CartVo> delete(Integer userId, Integer productId);
 
-    //CartVo getCartVo(Integer userId);
+    CartVo getCartVo(Integer userId);
 
     ServerResponse<CartVo> changeCheckState(Integer userId, List<Integer> productIds);
 

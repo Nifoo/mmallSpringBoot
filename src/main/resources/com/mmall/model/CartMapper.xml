@@ -171,6 +171,6 @@
   <update id="updateAllCheckByUserId" parameterType="map">
     update mmall_cart
     set checked = #{checkState}
-    where id = #{userId}
+    where user_id = #{userId}
   </update>
 </mapper>

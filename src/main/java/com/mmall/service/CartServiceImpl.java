@@ -43,7 +43,7 @@ public class CartServiceImpl implements ICartService {
             cartItem.setUserId(userId);
             cartItem.setProductId(productId);
             cartItem.setQuantity(count);
-            cartMapper.insert(cartItem);
+            cartMapper.insertSelective(cartItem);
         } else {
             cartItemDB.setQuantity(cartItemDB.getQuantity() + count);
             cartMapper.updateByPrimaryKey(cartItemDB);
@@ -82,8 +82,8 @@ public class CartServiceImpl implements ICartService {
     }
 
     //Core Function. Search cartItems (List<Cart> cartList) in cart table according to userId, convert them into List<CartItemVo> then CartVo.
-    //@Override
-    private CartVo getCartVo(Integer userId) {
+    @Override
+    public CartVo getCartVo(Integer userId) {
         //Find ALL the (userId, productId, count, ..) in Cart Table.
         List<Cart> cartList = cartMapper.selectByUserId(userId);
         //List<Cart> -> List<CartItemVo>
@@ -96,7 +96,7 @@ public class CartServiceImpl implements ICartService {
                 cartItemVoList.add(cartItemVo);
                 //added into totalPrice only when checked; set "allChecked" false only when unchecked.
                 if (cartItem.getChecked() == Cnst.Cart.CHECKED) {
-                    totalPrice.add(cartItemVo.getProductTotalPrice());
+                    totalPrice = totalPrice.add(cartItemVo.getProductTotalPrice());
                 } else {
                     allChecked = false;
                 }
